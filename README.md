@@ -32,3 +32,9 @@
 ### Path Mapping
 
 TypeScript/Node are pre-configured with custom path mappings. To import components or files, use the `@` prefix.
+
+
+ ### API Requirements
+
+ - Register user on mailing list
+ - Email user with bonus
