@@ -4,6 +4,10 @@ import { UserRepository } from "../ports/user-repository"
 export class InMemoryUserRepository implements UserRepository {
   constructor(private readonly users: UserData[]) {}
   async add(user: UserData): Promise<void> {
+    const exists = await this.exists(user.email)
+    if (exists) {
+      return
+    }
     this.users.push(user)
   }
   async findUserByEmail(email: string): Promise<UserData | null> {
