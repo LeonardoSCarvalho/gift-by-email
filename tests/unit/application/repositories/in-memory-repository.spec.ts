@@ -8,6 +8,12 @@ describe("In memory User repository", () => {
     const user = await useRepository.findUserByEmail("any@email.com")
     expect(user).toBeNull()
   })
+  it("Should return null if user is empty", async () => {
+    const users: UserData[] = []
+    const useRepository = new InMemoryUserRepository(users)
+    const user = await useRepository.findUserByEmail("")
+    expect(user).toBeNull()
+  })
   it("Should return if it is found in the repository", async () => {
     const users: UserData[] = []
     const name = "any_name"
