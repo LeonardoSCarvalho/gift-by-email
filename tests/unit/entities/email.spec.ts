@@ -5,4 +5,8 @@ describe("Email  validator", () => {
     const payload = null as unknown as string
     expect(Email.validade(payload)).toBeFalsy()
   })
+  it("should accept valid email", () => {
+    const email = "aby@mail.com"
+    expect(Email.validade(email)).toBeTruthy()
+  })
 })
