@@ -29,4 +29,8 @@ describe("Email  validator", () => {
     const email = "any@"
     expect(Email.validate(email)).toBeFalsy()
   })
+  it("Should not accept part of email domain greater than 64", () => {
+    const email = "any@" + "d".repeat(64) + ".com"
+    expect(Email.validate(email)).toBeFalsy()
+  })
 })
