@@ -21,4 +21,8 @@ describe("Email  validator", () => {
     const email = "a".repeat(64) + "@mail." + "a".repeat(250) + ".com"
     expect(Email.validade(email)).toBeFalsy()
   })
+  it("should not accept empty local part", () => {
+    const email = "@mail.com"
+    expect(Email.validade(email)).toBeFalsy()
+  })
 })
