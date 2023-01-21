@@ -9,4 +9,8 @@ describe("Email  validator", () => {
     const email = "aby@mail.com"
     expect(Email.validade(email)).toBeTruthy()
   })
+  it("Should not accept local part with more than 64 caracters", () => {
+    const email = "a".repeat(65) + "@mail.com"
+    expect(Email.validade(email)).toBeFalsy()
+  })
 })
