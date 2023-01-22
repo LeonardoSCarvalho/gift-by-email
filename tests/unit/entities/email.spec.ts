@@ -33,4 +33,8 @@ describe("Email  validator", () => {
     const email = "any@" + "d".repeat(64) + ".com"
     expect(Email.validate(email)).toBeFalsy()
   })
+  it("Should do not accept spaces in email", () => {
+    const email = "any @mail.com"
+    expect(Email.validate(email)).toBeFalsy()
+  })
 })
