@@ -1,14 +1,18 @@
 import { Either, left, right } from "@/shared/either"
-import { InvalidEmailError } from "../errors/invalid-email-error"
+import { InvalidEmailError, InvalidNameError } from "../errors"
 import { Email } from "./email"
+import { Name } from "./name"
 import { UserData } from "./user-data"
 
 export class User {
-  static create(userData: UserData): Either<InvalidEmailError, User> {
+  static create(
+    userData: UserData
+  ): Either<InvalidEmailError | InvalidNameError, User> {
+    const nameOrError = Name.create(userData.name)
     const emailOrError = Email.create(userData.email)
-    if (emailOrError.isLeft()) {
-      return left(new InvalidEmailError())
-    }
+    if (nameOrError.isLeft()) return left(new InvalidNameError())
+    if (emailOrError.isLeft()) return left(new InvalidEmailError())
+
     return right(new User())
   }
 }
