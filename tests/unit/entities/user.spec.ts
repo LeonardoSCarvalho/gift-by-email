@@ -17,4 +17,10 @@ describe("User domain entity ", () => {
     const error = User.create({ name: invalidName, email: "any@email.com" })
     expect(error).toEqual(left(new InvalidNameError()))
   })
+
+  it("Should not create user with invalid name (too many characters)", () => {
+    const invalidName = "o".repeat(257)
+    const error = User.create({ name: invalidName, email: "any@email.com" })
+    expect(error).toEqual(left(new InvalidNameError()))
+  })
 })
