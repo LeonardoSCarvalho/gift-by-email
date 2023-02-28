@@ -4,7 +4,7 @@ import { RegiesterUserOnMailingList } from "@/application/usecases/register-user
 import { UserData } from "@/domain/entities/user-data"
 
 describe("Regiter User on mailing list use case", () => {
-  it.skip("Should add user with complete data in mailing list", async () => {
+  it("Should add user with complete data in mailing list", async () => {
     const users: UserData[] = []
     const userRepository: UserRepository = new InMemoryUserRepository(users)
     const registerUserOnMailingList = new RegiesterUserOnMailingList(
