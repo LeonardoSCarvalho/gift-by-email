@@ -1,8 +1,8 @@
 import { UserRepository } from "@/application/ports/user-repository"
-import { InMemoryUserRepository } from "@/application/repositories/in-memory-user-repository"
 import { RegiesterUserOnMailingList } from "@/application/usecases/register-user-on-mailing-list/register-user-on-mailing-list"
 import { UserData } from "@/domain/entities/user-data"
 import { InvalidEmailError, InvalidNameError } from "@/domain/errors"
+import { InMemoryUserRepository } from "@/infra/repositories/in-memory-user-repository"
 import { left } from "@/shared/either"
 
 describe("Regiter User on mailing list use case", () => {
