@@ -4,7 +4,7 @@ import { UserData } from "@/domain/entities/user-data"
 import { InvalidEmailError, InvalidNameError } from "@/domain/errors"
 import { Either, left, right } from "@/shared/either"
 
-export class RegiesterUserOnMailingList {
+export class RegisterUserOnMailingList {
   constructor(private readonly userRepository: UserRepository) {}
   async perform(
     request: UserData
