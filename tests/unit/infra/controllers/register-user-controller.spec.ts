@@ -46,4 +46,25 @@ describe("Registe user web controller", () => {
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(InvalidNameError)
   })
+
+  it("Should return status code 400 when request contains invalid name", async () => {
+    const requestWithInvalidName: HttpRequest = {
+      body: {
+        name: "a",
+        email: "any@email.com",
+      },
+    }
+    const users: UserData[] = []
+    const userRepository = new InMemoryUserRepository(users)
+    const registerUserOnMailingList = new RegisterUserOnMailingList(
+      userRepository
+    )
+    const registerUserController: ResgisterUserController =
+      new ResgisterUserController(registerUserOnMailingList)
+    const response: HttpResponse = (await registerUserController.handle(
+      requestWithInvalidName
+    )) as HttpResponse
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(InvalidNameError)
+  })
 })
