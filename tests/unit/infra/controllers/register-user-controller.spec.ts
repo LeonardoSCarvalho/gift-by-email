@@ -1,6 +1,6 @@
 import { RegisterUserOnMailingList } from "@/application/usecases/register-user-on-mailing-list/register-user-on-mailing-list"
 import { UserData } from "@/domain/entities/user-data"
-import { InvalidNameError } from "@/domain/errors"
+import { InvalidEmailError, InvalidNameError } from "@/domain/errors"
 import { HttpRequest, HttpResponse } from "@/infra/controllers/ports/"
 import { ResgisterUserController } from "@/infra/controllers/register-user-controller"
 import { InMemoryUserRepository } from "@/infra/repositories/in-memory-user-repository"
@@ -66,5 +66,26 @@ describe("Registe user web controller", () => {
     )) as HttpResponse
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(InvalidNameError)
+  })
+
+  it("Should return status code 400 when request contains invalid email", async () => {
+    const requestWithInvalidName: HttpRequest = {
+      body: {
+        name: "any_name",
+        email: "a",
+      },
+    }
+    const users: UserData[] = []
+    const userRepository = new InMemoryUserRepository(users)
+    const registerUserOnMailingList = new RegisterUserOnMailingList(
+      userRepository
+    )
+    const registerUserController: ResgisterUserController =
+      new ResgisterUserController(registerUserOnMailingList)
+    const response: HttpResponse = (await registerUserController.handle(
+      requestWithInvalidName
+    )) as HttpResponse
+    expect(response.statusCode).toEqual(400)
+    expect(response.body).toBeInstanceOf(InvalidEmailError)
   })
 })
