@@ -69,7 +69,7 @@ describe("Registe user web controller", () => {
   })
 
   it("Should return status code 400 when request contains invalid email", async () => {
-    const requestWithInvalidName: HttpRequest = {
+    const requestWithInvalid: HttpRequest = {
       body: {
         name: "any_name",
         email: "a",
@@ -83,7 +83,7 @@ describe("Registe user web controller", () => {
     const registerUserController: ResgisterUserController =
       new ResgisterUserController(registerUserOnMailingList)
     const response: HttpResponse = (await registerUserController.handle(
-      requestWithInvalidName
+      requestWithInvalid
     )) as HttpResponse
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(InvalidEmailError)
