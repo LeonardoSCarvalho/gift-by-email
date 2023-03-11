@@ -1,5 +1,5 @@
 import { UserRepository } from "@/application/ports/user-repository"
-import { RegiesterUserOnMailingList } from "@/application/usecases/register-user-on-mailing-list/register-user-on-mailing-list"
+import { RegisterUserOnMailingList } from "@/application/usecases/register-user-on-mailing-list/register-user-on-mailing-list"
 import { UserData } from "@/domain/entities/user-data"
 import { InvalidEmailError, InvalidNameError } from "@/domain/errors"
 import { InMemoryUserRepository } from "@/infra/repositories/in-memory-user-repository"
@@ -9,7 +9,7 @@ describe("Regiter User on mailing list use case", () => {
   it("Should add user with complete data in mailing list", async () => {
     const users: UserData[] = []
     const userRepository: UserRepository = new InMemoryUserRepository(users)
-    const registerUserOnMailingList = new RegiesterUserOnMailingList(
+    const registerUserOnMailingList = new RegisterUserOnMailingList(
       userRepository
     )
     const name = "any name"
@@ -23,7 +23,7 @@ describe("Regiter User on mailing list use case", () => {
   it("Should not add user with invalid email to mailing list", async () => {
     const users: UserData[] = []
     const userRepository: UserRepository = new InMemoryUserRepository(users)
-    const registerUserOnMailingList = new RegiesterUserOnMailingList(
+    const registerUserOnMailingList = new RegisterUserOnMailingList(
       userRepository
     )
     const name = "any name"
@@ -40,7 +40,7 @@ describe("Regiter User on mailing list use case", () => {
   it("Should not add user with invalid name to mailing list", async () => {
     const users: UserData[] = []
     const userRepository: UserRepository = new InMemoryUserRepository(users)
-    const registerUserOnMailingList = new RegiesterUserOnMailingList(
+    const registerUserOnMailingList = new RegisterUserOnMailingList(
       userRepository
     )
     const nameInvalid = "i"
