@@ -12,6 +12,7 @@
     "test:watch": "jest --watchAll",
     "test:staged": "npm test --findRelatedTests",
     "test:push": "jest --passWithNoTests --coverage",
+    "test:integration": "npm test -- --watch --detectOpenHandles -c jest-integration-config.js",
     "prepare": "husky install"
   },
   "keywords": [],
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@types/jest": "^29.2.3",
     "@types/node": "^18.11.9",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",
