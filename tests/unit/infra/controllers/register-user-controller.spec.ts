@@ -1,3 +1,4 @@
+import { UseCase } from "@/application/usecases/ports/use-case"
 import { RegisterUserOnMailingList } from "@/application/usecases/register-user-on-mailing-list/register-user-on-mailing-list"
 import { UserData } from "@/domain/entities/user-data"
 import { InvalidEmailError, InvalidNameError } from "@/domain/errors"
@@ -6,6 +7,20 @@ import { ResgisterUserController } from "@/infra/controllers/register-user-contr
 import { InMemoryUserRepository } from "@/infra/repositories/in-memory-user-repository"
 
 describe("Registe user web controller", () => {
+  const users: UserData[] = []
+  const userRepository = new InMemoryUserRepository(users)
+  const registerUserOnMailingList: UseCase = new RegisterUserOnMailingList(
+    userRepository
+  )
+
+  const registerUserController: ResgisterUserController =
+    new ResgisterUserController(registerUserOnMailingList)
+  class ErrorThrowingUseCaseStub implements UseCase {
+    perform(request: any): Promise<void> {
+      throw Error(request)
+    }
+  }
+  const errorThrowingUseCaseStub: UseCase = new ErrorThrowingUseCaseStub()
   it("Should return status code 201 when request contains valid user data", async () => {
     const request: HttpRequest = {
       body: {
@@ -13,13 +28,6 @@ describe("Registe user web controller", () => {
         email: "any@email.com",
       },
     }
-    const users: UserData[] = []
-    const userRepository = new InMemoryUserRepository(users)
-    const registerUserOnMailingList = new RegisterUserOnMailingList(
-      userRepository
-    )
-    const registerUserController: ResgisterUserController =
-      new ResgisterUserController(registerUserOnMailingList)
     const response: HttpResponse = (await registerUserController.handle(
       request
     )) as HttpResponse
@@ -33,13 +41,6 @@ describe("Registe user web controller", () => {
         email: "any@email.com",
       },
     }
-    const users: UserData[] = []
-    const userRepository = new InMemoryUserRepository(users)
-    const registerUserOnMailingList = new RegisterUserOnMailingList(
-      userRepository
-    )
-    const registerUserController: ResgisterUserController =
-      new ResgisterUserController(registerUserOnMailingList)
     const response: HttpResponse = (await registerUserController.handle(
       requestWithInvalidName
     )) as HttpResponse
@@ -54,16 +55,9 @@ describe("Registe user web controller", () => {
         email: "any@email.com",
       },
     }
-    const users: UserData[] = []
-    const userRepository = new InMemoryUserRepository(users)
-    const registerUserOnMailingList = new RegisterUserOnMailingList(
-      userRepository
-    )
-    const registerUserController: ResgisterUserController =
-      new ResgisterUserController(registerUserOnMailingList)
-    const response: HttpResponse = (await registerUserController.handle(
+    const response: HttpResponse = await registerUserController.handle(
       requestWithInvalidName
-    )) as HttpResponse
+    )
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(InvalidNameError)
   })
@@ -75,17 +69,25 @@ describe("Registe user web controller", () => {
         email: "a",
       },
     }
-    const users: UserData[] = []
-    const userRepository = new InMemoryUserRepository(users)
-    const registerUserOnMailingList = new RegisterUserOnMailingList(
-      userRepository
-    )
-    const registerUserController: ResgisterUserController =
-      new ResgisterUserController(registerUserOnMailingList)
-    const response: HttpResponse = (await registerUserController.handle(
+    const response: HttpResponse = await registerUserController.handle(
       requestWithInvalid
-    )) as HttpResponse
+    )
     expect(response.statusCode).toEqual(400)
     expect(response.body).toBeInstanceOf(InvalidEmailError)
+  })
+
+  it("Should return status code 500 when server raises", async () => {
+    const request: HttpRequest = {
+      body: {
+        name: "any_name",
+        email: "any@email.com",
+      },
+    }
+    const controller: ResgisterUserController = new ResgisterUserController(
+      errorThrowingUseCaseStub
+    )
+    const response: HttpResponse = await controller.handle(request)
+    expect(response.statusCode).toEqual(500)
+    expect(response.body).toBeInstanceOf(Error)
   })
 })
