@@ -7,5 +7,8 @@ export const makeRegisterUserController = (): RegisterUserController => {
   const registerUserOnMailingList = new RegisterUserOnMailingList(
     inMemoryUserRepository
   )
-  return new RegisterUserController(registerUserOnMailingList)
+  const registerUserController = new RegisterUserController(
+    registerUserOnMailingList
+  )
+  return registerUserController
 }
