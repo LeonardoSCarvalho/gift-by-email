@@ -3,7 +3,7 @@ import { UserData } from "@/domain/entities/user-data"
 import { HttpRequest, HttpResponse } from "./ports"
 import { badRequest, created, serverError } from "./utils"
 
-export class ResgisterUserController {
+export class RegisterUserController {
   constructor(private readonly useCase: UseCase) {}
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {

@@ -3,7 +3,7 @@ import { RegisterUserOnMailingList } from "@/application/usecases/register-user-
 import { UserData } from "@/domain/entities/user-data"
 import { InvalidEmailError, InvalidNameError } from "@/domain/errors"
 import { HttpRequest, HttpResponse } from "@/infra/controllers/ports/"
-import { ResgisterUserController } from "@/infra/controllers/register-user-controller"
+import { RegisterUserController } from "@/infra/controllers/register-user-controller"
 import { InMemoryUserRepository } from "@/infra/repositories/in-memory-user-repository"
 
 describe("Registe user web controller", () => {
@@ -13,8 +13,8 @@ describe("Registe user web controller", () => {
     userRepository
   )
 
-  const registerUserController: ResgisterUserController =
-    new ResgisterUserController(registerUserOnMailingList)
+  const registerUserController: RegisterUserController =
+    new RegisterUserController(registerUserOnMailingList)
   class ErrorThrowingUseCaseStub implements UseCase {
     perform(request: any): Promise<void> {
       throw Error(request)
@@ -69,7 +69,7 @@ describe("Registe user web controller", () => {
         email: "any@email.com",
       },
     }
-    const controller: ResgisterUserController = new ResgisterUserController(
+    const controller: RegisterUserController = new RegisterUserController(
       errorThrowingUseCaseStub
     )
     const response: HttpResponse = await controller.handle(request)
